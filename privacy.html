@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyMoney — Privacy</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+           color: #1e293b; background: #f8fafc; max-width: 720px; margin: 2rem auto; padding: 0 1.5rem;
+           line-height: 1.6; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.1rem; margin-top: 2rem; }
+    p, li { color: #475569; }
+    .meta { color: #94a3b8; font-size: 0.875rem; margin-bottom: 2rem; }
+    code { background: #e2e8f0; padding: 0.125rem 0.375rem; border-radius: 4px; font-size: 0.875em; }
+  </style>
+</head>
+<body>
+  <h1>Privacy</h1>
+  <p class="meta">MyMoney — persoonlijke financiële administratie. Laatst bijgewerkt: mei 2026.</p>
+
+  <h2>Doel van de applicatie</h2>
+  <p>
+    MyMoney is een desktop-applicatie voor persoonlijk gebruik door één eigenaar
+    (Peter Jansen). De app aggregeert transactiegegevens van bankrekeningen van
+    de eigenaar zelf, en is niet beschikbaar of bedoeld voor gebruik door derden.
+  </p>
+
+  <h2>Welke gegevens worden verwerkt</h2>
+  <p>
+    Wanneer de applicatie via Enable Banking toegang krijgt tot bankrekeningen
+    van de eigenaar, worden de volgende gegevens opgehaald en lokaal opgeslagen:
+  </p>
+  <ul>
+    <li>Bankrekeningnummers (IBAN) van de eigenaar</li>
+    <li>Saldo per rekening</li>
+    <li>Transactiegegevens: datum, bedrag, tegenpartij, omschrijving, referentie</li>
+  </ul>
+
+  <h2>Opslag en verwerking</h2>
+  <p>
+    Alle gegevens worden uitsluitend opgeslagen in een lokale SQLite-database
+    op het apparaat van de eigenaar (<code>~/Library/Application Support/MyMoney/</code>).
+    Er vindt geen overdracht naar externe servers plaats anders dan de
+    noodzakelijke API-aanroepen naar Enable Banking voor het ophalen van
+    transactiegegevens, en (optioneel) naar Anthropic voor AI-categorisatie van
+    transactie-omschrijvingen.
+  </p>
+
+  <h2>Doorgifte aan derden</h2>
+  <p>
+    Geen. Gegevens worden niet gedeeld, verkocht, geanalyseerd door derden, of
+    op enige andere wijze aan partijen buiten de eigenaar verstrekt.
+  </p>
+
+  <h2>Bewaartermijn</h2>
+  <p>
+    Gegevens blijven bewaard zolang de eigenaar dat wenst en kunnen op elk
+    moment lokaal worden verwijderd door de SQLite-database te wissen.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Voor vragen: <a href="mailto:P.Jansen@triple-n.nl">P.Jansen@triple-n.nl</a>
+  </p>
+</body>
+</html>
