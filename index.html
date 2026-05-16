@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyMoney — Bankkoppeling</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .card {
+      background: white;
+      padding: 2.5rem 3rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+    }
+    .check {
+      font-size: 3rem;
+      color: #10b981;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 0.5rem;
+      font-weight: 600;
+    }
+    p {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin: 0.5rem 0;
+      line-height: 1.5;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .button:hover {
+      background: #2563eb;
+    }
+    .error {
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      text-align: left;
+    }
+    .small {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="content">
+      <div class="check">✓</div>
+      <h1>Bankkoppeling voltooid</h1>
+      <p id="status">MyMoney wordt automatisch geopend...</p>
+      <p id="manual" style="display:none">
+        <a href="#" id="open-link" class="button">Open MyMoney</a>
+      </p>
+      <p class="small">Je kunt dit tabblad daarna sluiten.</p>
+    </div>
+  </div>
+  <script>
+    (function() {
+      // Read callback parameters from URL
+      var params = new URLSearchParams(window.location.search);
+      var state = params.get('state') || params.get('ref');
+      var code = params.get('code');
+      var error = params.get('error');
+      var errorDescription = params.get('error_description');
+
+      var content = document.getElementById('content');
+
+      if (error) {
+        content.innerHTML =
+          '<div style="font-size:3rem;color:#dc2626;margin-bottom:1rem;line-height:1;">×</div>' +
+          '<h1>Bankkoppeling mislukt</h1>' +
+          '<p>' + escapeHtml(errorDescription || error) + '</p>' +
+          '<p class="small">Sluit dit tabblad en probeer opnieuw vanuit MyMoney.</p>';
+        return;
+      }
+
+      if (!state || !code) {
+        content.innerHTML =
+          '<div style="font-size:3rem;color:#dc2626;margin-bottom:1rem;line-height:1;">×</div>' +
+          '<h1>Onvolledige callback</h1>' +
+          '<p>De bank stuurde geen state of code mee. Sluit dit tabblad en probeer opnieuw.</p>';
+        return;
+      }
+
+      // Build the mymoney:// URL preserving all query params
+      var deepLink = 'mymoney://callback?' + window.location.search.replace(/^\?/, '');
+
+      // Try the automatic redirect immediately
+      try {
+        window.location.href = deepLink;
+      } catch (e) {
+        // Fall through to manual button
+      }
+
+      // Show a manual button after a short delay (in case OS prompt was dismissed
+      // or browser blocked the automatic redirect)
+      setTimeout(function() {
+        var link = document.getElementById('open-link');
+        var manual = document.getElementById('manual');
+        var status = document.getElementById('status');
+        link.href = deepLink;
+        manual.style.display = '';
+        status.textContent = 'Klik op de knop als MyMoney niet automatisch opent:';
+      }, 1500);
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+    })();
+  </script>
+</body>
+</html>
